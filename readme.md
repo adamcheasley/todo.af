@@ -1,4 +1,4 @@
-# TODO AF
+# ✨TODO AF✨
 
 A task manager for the command line.
 
