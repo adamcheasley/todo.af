@@ -1,4 +1,5 @@
 import configparser
+import operator
 import os
 import sys
 from pathlib import Path
@@ -19,7 +20,11 @@ def print_to_terminal(colour_code, message):
 def help():
     """Print out the help docs"""
     print('todo as fuck. version {}'.format(VERSION))
-    print('Usage: todo [ add <task> ] [ delete <num> ] [ complete <num> ]')
+    print(
+        'Usage: todo '
+        '[ add <task> ] [ delete <num> ] [ complete <num> ]'
+        ' [ up <task> ] [ down <num> ]'
+    )
 
 
 def config_data():
@@ -63,6 +68,28 @@ def complete(todo_data, num):
     del todo_data['current'][int(num) - 1]
     todo_data['archive'].append(completed)
     print_to_terminal(GREEN, 'Completed task - {}.'.format(completed))
+    return todo_data
+
+
+def move(todo_data, num, op):
+    """Move task up or down"""
+    i = int(num) - 1
+    current = todo_data['current']
+    current.insert(op(i, 1), current.pop(i))
+    return todo_data
+
+
+def up(todo_data, num):
+    """Move task num up one place"""
+    todo_data = move(todo_data, num, operator.sub)
+    print_to_terminal(GREEN, 'Task bumped up the list.')
+    return todo_data
+
+
+def down(todo_data, num):
+    """Move task num down one place"""
+    todo_data = move(todo_data, num, operator.add)
+    print_to_terminal(GREEN, 'Task knocked down the list.')
     return todo_data
 
 
@@ -133,7 +160,7 @@ elif cli_args[1] == 'add':
 elif cli_args[1] == 'help':
     help()
     sys.exit(0)
-elif cli_args[1] in {'delete', 'complete'}:
+elif cli_args[1] in {'delete', 'complete', 'up', 'down'}:
     try:
         todo_data = globals()[cli_args[1]](tasks, cli_args[-1])
     except (IndexError, ValueError):
