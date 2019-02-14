@@ -123,14 +123,12 @@ if len(cli_args) == 1:
     sys.exit(0)
 elif cli_args[1] == 'add':
     todo_data = add(tasks, ' '.join(cli_args[2:]))
-elif cli_args[1] == 'delete':
+elif cli_args[1] in {'delete', 'complete'}:
     try:
-        todo_data = delete(tasks, cli_args[-1])
-    except IndexError:
+        todo_data = globals()[cli_args[1]](tasks, cli_args[-1])
+    except (IndexError, ValueError):
         print_to_terminal(RED, 'Could not find task.')
         todo_data = tasks
-elif cli_args[1] == 'complete':
-    todo_data = complete(tasks, cli_args[-1])
 else:
     print_to_terminal(RED, 'Unknown command.')
     sys.exit(1)
