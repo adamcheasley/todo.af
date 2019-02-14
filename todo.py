@@ -8,11 +8,18 @@ GREEN = '\033[1;32;40m'
 RED = '\033[1;31;40m'
 TASKS_BLOCK = '===TASKS==='
 ARCHIVE_BLOCK = '===ARCHIVE==='
+VERSION = '0.1'
 
 
 def print_to_terminal(colour_code, message):
     """Print to console using colour codes."""
     print('{} {}{}'.format(colour_code, message, END_CODE))
+
+
+def help():
+    """Print out the help docs"""
+    print('todo as fuck. version {}'.format(VERSION))
+    print('Usage: todo [ add <task> ] [ delete <num> ] [ complete <num> ]')
 
 
 def config_data():
@@ -123,6 +130,9 @@ if len(cli_args) == 1:
     sys.exit(0)
 elif cli_args[1] == 'add':
     todo_data = add(tasks, ' '.join(cli_args[2:]))
+elif cli_args[1] == 'help':
+    help()
+    sys.exit(0)
 elif cli_args[1] in {'delete', 'complete'}:
     try:
         todo_data = globals()[cli_args[1]](tasks, cli_args[-1])
