@@ -14,12 +14,12 @@ VERSION = '0.1'
 
 def print_to_terminal(colour_code, message):
     """Print to console using colour codes."""
-    print('{} {}{}'.format(colour_code, message, END_CODE))
+    print(f'{colour_code} {message}{END_CODE}')
 
 
 def help():
     """Print out the help docs"""
-    print('todo as fuck. version {}'.format(VERSION))
+    print(f'todo as fuck. version {VERSION}')
     print(
         'Usage: todo '
         '[ add <task> ] [ delete <num> ] [ complete <num> ]'
@@ -30,7 +30,7 @@ def help():
 def config_data():
     """Get config"""
     config = configparser.ConfigParser()
-    config.read('{}/.todo.cfg'.format(Path.home()))
+    config.read(f'{Path.home()}/.todo.cfg')
     return config
 
 
@@ -42,7 +42,7 @@ def list(todo_data):
 
     print_to_terminal(GREEN, '\nTODO:')
     for i, task in enumerate(todo_data['current']):
-        print('{}. {}'.format(i + 1, task))
+        print(f'{i + 1}. {task}')
     print()
     sys.exit(0)
 
@@ -58,7 +58,7 @@ def delete(todo_data, num):
     """Remove task by task number"""
     deleted = todo_data['current'][int(num) - 1]
     del todo_data['current'][int(num) - 1]
-    print_to_terminal(GREEN, 'Deleted task - {}.'.format(deleted))
+    print_to_terminal(GREEN, f'Deleted task - {deleted}.')
     return todo_data
 
 
@@ -67,7 +67,7 @@ def complete(todo_data, num):
     completed = todo_data['current'][int(num) - 1]
     del todo_data['current'][int(num) - 1]
     todo_data['archive'].append(completed)
-    print_to_terminal(GREEN, 'Completed task - {}.'.format(completed))
+    print_to_terminal(GREEN, f'Completed task - {completed}.')
     return todo_data
 
 
@@ -104,12 +104,12 @@ def save_tasks(todo_data, todo_file):
 
 def serialise(data):
     """Serialse the data for writing out to file."""
-    out = '{}\n'.format(TASKS_BLOCK)
+    out = f'{TASKS_BLOCK}\n'
     for i, task in enumerate(data['current']):
-        out += '{}\n'.format(task)
-    out += '{}\n'.format(ARCHIVE_BLOCK)
+        out += f'{task}\n'
+    out += f'{ARCHIVE_BLOCK}\n'
     for task in data['archive']:
-        out += '{}\n'.format(task)
+        out += f'{task}\n'
     return out
 
 
@@ -167,9 +167,8 @@ elif cli_args[1] in {'delete', 'complete', 'up', 'down'}:
         print_to_terminal(RED, 'Could not find task.')
         todo_data = tasks
 elif cli_args[1] == 'which':
-    print_to_terminal(GREEN, 'You are using the todo file: {}'.format(
-        todo_file_location
-    ))
+    print_to_terminal(
+        GREEN, f'You are using the todo file: {todo_file_location}')
     sys.exit(0)
 else:
     print_to_terminal(RED, 'Unknown command.')
