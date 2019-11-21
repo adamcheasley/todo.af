@@ -167,8 +167,7 @@ elif cli_args[1] in {'delete', 'complete', 'up', 'down'}:
         print_to_terminal(RED, 'Could not find task.')
         todo_data = tasks
 elif cli_args[1] == 'which':
-    print_to_terminal(
-        GREEN, f'You are using the todo file: {todo_file_location}')
+    print_to_terminal(GREEN, f'You are using the todo file: {todo_file_location}')
     sys.exit(0)
 else:
     print_to_terminal(RED, 'Unknown command.')
