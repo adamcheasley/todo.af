@@ -125,7 +125,7 @@ def deserialise(data):
     archive_start = None
 
     for i, line in enumerate(lines):
-        if i == len(lines) - 2:
+        if i == len(lines) - 1:
             return out
         if line == TASKS_BLOCK:
             task_start = i + 1
