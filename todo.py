@@ -10,6 +10,7 @@ RED = '\033[1;31;40m'
 TASKS_BLOCK = '===TASKS==='
 ARCHIVE_BLOCK = '===ARCHIVE==='
 VERSION = '0.1'
+CONFIG_FILE_LOCATION = f'{Path.home()}/.todo.cfg'
 
 
 def print_to_terminal(colour_code, message):
@@ -30,7 +31,7 @@ def help():
 def config_data():
     """Get config"""
     config = configparser.ConfigParser()
-    config.read(f'{Path.home()}/.todo.cfg')
+    config.read(CONFIG_FILE_LOCATION)
     return config
 
 
@@ -140,6 +141,14 @@ def deserialise(data):
             out['archive'].append(line)
 
 
+cli_args = sys.argv
+if len(cli_args) > 1 and cli_args[1].lower() == 'use':
+    config = config_data()
+    config['default']['todofile'] = cli_args[2]
+    with open(CONFIG_FILE_LOCATION, 'w') as configfile:
+        config.write(configfile)
+        sys.exit(0)
+
 config = config_data()
 todo_file_location = os.path.expanduser(config['default']['todofile'])
 try:
@@ -150,7 +159,6 @@ except FileNotFoundError:  # noqa
 todo_data_raw = todo_file.read()
 tasks = deserialise(todo_data_raw)
 
-cli_args = sys.argv
 if len(cli_args) == 1:
     # list todos
     list(tasks)

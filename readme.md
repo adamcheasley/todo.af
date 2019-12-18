@@ -1,6 +1,6 @@
 # ✨TODO AF✨
 
-A simple task manager for the command line, written in Python.
+A todo app for people who spend time in the terminal.
 
 ## Install
 
@@ -37,3 +37,4 @@ The main commands are;
 - `todo add <your task here>` add a task to the end of the list.
 - `todo delete <task number>` delete a task completely.
 - `todo complete <task number>` move a task to the archive.
+- `todo use <path to todo file>` switch todo files
