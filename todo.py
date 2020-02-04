@@ -55,6 +55,12 @@ def add(todo_data, task):
     return todo_data
 
 
+def add_top(todo_data, task):
+    todo_data['current'].insert(0, task)
+    print_to_terminal(GREEN, 'Task added to the top of the list.')
+    return todo_data
+
+
 def delete(todo_data, num):
     """Remove task by task number"""
     deleted = todo_data['current'][int(num) - 1]
@@ -165,6 +171,8 @@ if len(cli_args) == 1:
     sys.exit(0)
 elif cli_args[1] == 'add':
     todo_data = add(tasks, ' '.join(cli_args[2:]))
+elif cli_args[1] == 'top':
+    todo_data = add_top(tasks, ' '.join(cli_args[2:]))
 elif cli_args[1] == 'help':
     help()
     sys.exit(0)
